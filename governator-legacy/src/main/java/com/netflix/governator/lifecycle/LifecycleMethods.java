@@ -63,10 +63,10 @@ public class LifecycleMethods {
     
     private static final Logger log = LoggerFactory.getLogger(LifecycleMethods.class);
 
-    private boolean hasValidations = false;
+    private final boolean hasValidations;
     private final boolean hasResources;
-    final static Map<Method, MethodHandle> methodHandlesMap = new ConcurrentHashMap<>(I15_32768);
-    final static Map<Field, MethodHandle[]> fieldHandlesMap = new ConcurrentHashMap<>(I15_32768);
+    static final Map<Method, MethodHandle> methodHandlesMap = new ConcurrentHashMap<>(I15_32768);
+    static final Map<Field, MethodHandle[]> fieldHandlesMap = new ConcurrentHashMap<>(I15_32768);
 
     
     static class LifecycleMethodsBuilder {
@@ -97,7 +97,7 @@ public class LifecycleMethods {
             classAnnotations = classAnnotationsBuilder.build();
         }
 
-        private boolean hasValidations = false;
+        private boolean hasValidations;
         private boolean hasResources;
         private final Multimap<Class<? extends Annotation>, Field> fieldMap = ArrayListMultimap.create(I3_8, I5_32);
         private final Multimap<Class<? extends Annotation>, Method> methodMap = ArrayListMultimap.create(I4_16, I5_32);
@@ -361,7 +361,7 @@ public class LifecycleMethods {
         }
     }
 
-    private final static MethodHandle[] EMPTY_FIELD_HANDLES = new MethodHandle[0];
+    private static final MethodHandle[] EMPTY_FIELD_HANDLES = new MethodHandle[0];
     private static MethodHandle[] updateFieldHandles(Field field) {
         synchronized(fieldHandlesMap) {
             MethodHandle[] handles = EMPTY_FIELD_HANDLES;
