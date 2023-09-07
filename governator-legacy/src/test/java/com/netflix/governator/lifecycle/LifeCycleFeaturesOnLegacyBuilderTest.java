@@ -40,8 +40,8 @@ public class LifeCycleFeaturesOnLegacyBuilderTest {
     static class LifecycleSubject {
         private Logger logger = LoggerFactory.getLogger(LifecycleSubject.class);
         private String name;
-        private volatile boolean postConstructed = false;
-        private volatile boolean preDestroyed = false;
+        private volatile boolean postConstructed;
+        private volatile boolean preDestroyed;
 
         private static AtomicInteger instanceCounter = new AtomicInteger(0);
 
@@ -101,11 +101,11 @@ public class LifeCycleFeaturesOnLegacyBuilderTest {
     
     static interface LifecycleInterface {
         @PostConstruct
-        public default void init() {
+        default public void init() {
             System.out.println("init() called");
         }
         @PreDestroy
-        public default void destroy() {
+        default public void destroy() {
             System.out.println("destroy() called");
         }
 

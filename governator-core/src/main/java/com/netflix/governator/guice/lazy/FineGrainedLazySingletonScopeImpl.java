@@ -50,7 +50,7 @@ class FineGrainedLazySingletonScopeImpl extends AbstractScope
     private static class LockRecord
     {
         private final Object        lock = new Object();
-        private int                 useCount = 0;
+        private int                 useCount;
     }
 
     public <T> Provider<T> scope(final Key<T> key, final Provider<T> creator)

@@ -194,8 +194,8 @@ final class GovernatorComponentProviderFactory implements IoCComponentProviderFa
     }
 
     private static boolean isInjectable(AnnotatedElement element) {
-        return (element.isAnnotationPresent(com.google.inject.Inject.class)
-                || element.isAnnotationPresent(javax.inject.Inject.class));
+        return element.isAnnotationPresent(com.google.inject.Inject.class)
+                || element.isAnnotationPresent(javax.inject.Inject.class);
     }
 
     /**
@@ -204,7 +204,7 @@ final class GovernatorComponentProviderFactory implements IoCComponentProviderFa
      * @return the map
      */
     public Map<Scope, ComponentScope> createScopeMap() {
-        Map<Scope, ComponentScope> result = new HashMap<Scope, ComponentScope>();
+        Map<Scope, ComponentScope> result = new HashMap<>();
         result.put(Scopes.SINGLETON, ComponentScope.Singleton);
         result.put(Scopes.NO_SCOPE, ComponentScope.PerRequest);
         result.put(ServletScopes.REQUEST, ComponentScope.PerRequest);
