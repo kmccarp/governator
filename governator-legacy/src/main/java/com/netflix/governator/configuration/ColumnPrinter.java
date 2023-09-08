@@ -47,7 +47,7 @@ class ColumnPrinter
      */
     void addColumn(String columnName)
     {
-        data.add(new ArrayList<String>());
+        data.add(new ArrayList<>());
         columnNames.add(columnName);
     }
 

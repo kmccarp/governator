@@ -50,13 +50,13 @@ import com.netflix.governator.internal.PreDestroyMonitor;
 public final class LifecycleModule extends AbstractModule {
     private static final Logger LOG = LoggerFactory.getLogger(LifecycleModule.class);
 
-    private LifecycleProvisionListener provisionListener = new LifecycleProvisionListener();
+    private final LifecycleProvisionListener provisionListener = new LifecycleProvisionListener();
 
     /**
      * Holder of actions for a specific type.
      */
     static class TypeLifecycleActions {
-        final List<LifecycleAction> postConstructActions = new ArrayList<LifecycleAction>();
+        final List<LifecycleAction> postConstructActions = new ArrayList<>();
         final List<LifecycleAction> preDestroyActions = new ArrayList<>();
     }
     
