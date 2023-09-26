@@ -28,19 +28,19 @@ public class AdvisesBinderTest {
     
     @Test
     public void adviseWithAdvice() {
-        TypeLiteral<List<String>> LIST_TYPE_LITERAL =  new TypeLiteral<List<String>>() {};
+        TypeLiteral<List<String>> listTypeLiteral =  new TypeLiteral<List<String>>() {};
         
         Injector injector = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
                 install(AdvisableAnnotatedMethodScanner.asModule());
                 
-                AdvisesBinder.bind(binder(), LIST_TYPE_LITERAL).toInstance(new ArrayList<>());
-                AdvisesBinder.bindAdvice(binder(), LIST_TYPE_LITERAL, 0).to(AdviseList.class);
+                AdvisesBinder.bind(binder(), listTypeLiteral).toInstance(new ArrayList<>());
+                AdvisesBinder.bindAdvice(binder(), listTypeLiteral, 0).to(AdviseList.class);
             }
         });
         
-        List<String> list = injector.getInstance(Key.get(LIST_TYPE_LITERAL));
+        List<String> list = injector.getInstance(Key.get(listTypeLiteral));
         Assert.assertEquals(Arrays.asList("a"), list);
     }
 
