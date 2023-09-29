@@ -22,8 +22,9 @@ public class GovernatorBootstrap implements BootstrapModule {
     
     @Override
     public void configure(BootstrapBinder binder) {
-        if (config.enableAutoBindSingleton() == false)
+        if (config.enableAutoBindSingleton() == false) {
             binder.disableAutoBinding();
+        }
         binder.inStage(config.stage());
         binder.inMode(config.mode());
         
