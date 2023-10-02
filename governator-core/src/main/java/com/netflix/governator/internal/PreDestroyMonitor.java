@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
  *
  */
 public class PreDestroyMonitor implements AutoCloseable {
-    private static Logger LOGGER = LoggerFactory.getLogger(PreDestroyMonitor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PreDestroyMonitor.class);
 
     private static class ScopeCleanupMarker {
         static final Key<ScopeCleanupMarker> MARKER_KEY = Key.get(ScopeCleanupMarker.class);
@@ -143,8 +143,8 @@ public class PreDestroyMonitor implements AutoCloseable {
 
     }
 
-    private ConcurrentMap<Object, UnscopedCleanupAction> cleanupActions = new MapMaker().weakKeys().concurrencyLevel(256).makeMap();
-    private ScopeCleaner scopeCleaner = new ScopeCleaner();
+    private final ConcurrentMap<Object, UnscopedCleanupAction> cleanupActions = new MapMaker().weakKeys().concurrencyLevel(256).makeMap();
+    private final ScopeCleaner scopeCleaner = new ScopeCleaner();
     private Map<Class<? extends Annotation>, Scope> scopeBindings;
 
     public PreDestroyMonitor(Map<Class<? extends Annotation>, Scope> scopeBindings) {
@@ -190,7 +190,7 @@ public class PreDestroyMonitor implements AutoCloseable {
         if (scopeCleaner.close()) { // executor thread to exit processing loop            
             LOGGER.info("closing PreDestroyMonitor...");
             List<Map.Entry<Object, UnscopedCleanupAction>> actions = new ArrayList<>(cleanupActions.entrySet());
-            if (actions.size() > 0) {
+            if (!actions.isEmpty()) {
                 LOGGER.warn("invoking predestroy action for {} unscoped instances", actions.size());
                 actions.stream().map(Map.Entry::getValue).collect(
                     Collectors.groupingBy(UnscopedCleanupAction::getContext, Collectors.counting())).forEach((source, count)->{
@@ -299,7 +299,7 @@ public class PreDestroyMonitor implements AutoCloseable {
     }
 
     private static final class UnscopedCleanupAction implements LifecycleAction, Comparable<UnscopedCleanupAction> {
-        private volatile static long instanceCounter = 0;
+        private static volatile long instanceCounter;
         private final long ordinal;
         private final Object context;
         private final Iterable<LifecycleAction> lifecycleActions;
@@ -339,7 +339,7 @@ public class PreDestroyMonitor implements AutoCloseable {
      */
     private static final class ScopeCleanupAction extends WeakReference<ScopeCleanupMarker>
             implements Callable<Void>, Comparable<ScopeCleanupAction> {
-        private volatile static long instanceCounter = 0;
+        private static volatile long instanceCounter;
         private final Object id;
         private final long ordinal;
         private Deque<Object[]> delegates = new ConcurrentLinkedDeque<>();
