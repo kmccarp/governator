@@ -66,7 +66,7 @@ class AdvisedProvider<T> implements ProviderWithExtensionVisitor<T>, HasDependen
                 AdviceElementImpl adviceElement = (AdviceElementImpl) bindingKey.getAnnotation();
                 if (name.equals(adviceElement.name())) {
                     if (adviceElement.type() == AdviceElement.Type.ADVICE) {
-                        adviceBindings.add(new ProvisionAdviceHolder<UnaryOperator<T>>((Binding<UnaryOperator<T>>) binding, adviceElement.getOrder()));
+                        adviceBindings.add(new ProvisionAdviceHolder<>((Binding<UnaryOperator<T>>) binding, adviceElement.getOrder()));
                     }
                     dependencies.add(Dependency.get(bindingKey));
                 }
